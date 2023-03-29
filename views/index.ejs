@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%=title%>
+    </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/fontawesome.min.css">
+    <link rel="stylesheet" href="stylesheets/bootstrap.min.css">
+
+    <style>
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center mt-3">List Employees</h1>
+        <div class="container">
+            <table class="table table-striped border">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col" colspan="2" class="text-center">Edit</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <% for (const item of data) { %>
+                        <tr>
+                            <td>
+                                <%= item._id %>
+                            </td>
+                            <td>
+                                <%= item.name %>
+                            </td>
+                            <td>
+                                <%= item.position %>
+                            </td>
+                            <td>
+                                <%= item.email %>
+                            </td>
+                            <td>
+                                <%= item.phone %>
+                            </td>
+                            <td>
+                                <%= item.salary %>$
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary col-sm-3 col-md-2" style="width: 85px;"
+                                    data-bs-toggle="modal" data-bs-target="#editModal_<%= item._id %>">Update</button>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary col-sm-3 col-md-2" style="width: 85px;"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+            <div class="d-flex flex-row align-items-center">
+                <button type="button" class="btn btn-primary col-sm-3 col-md-2" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Add Employee
+                </button>
+              
+            </div>
+            <!-- Button trigger modal -->
+
+
+        </div>
+        <!-- Modal -->
+        <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add new employee</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/addEmployee" method="post">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label"> Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Vu Viet Khanh">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label"> Position</label>
+                                <input type="text" class="form-control" id="position" name="position" placeholder="Software Engineer">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label"> Email</label>
+                                <input type="text" class="form-control" id="email" name="email" placeholder="vvvv@gmail.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label ">Phone</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="0123456789">
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Salary</label>
+                                <input class="form-control" type="text"  name="salary" placeholder="0" id="salary">
+                            </div>
+                        <span id="errorAdd" class="fw-bold text-danger"></span>
+
+                            <div class="modal-footer">
+                                
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" id="btn-add-employee" class="btn btn-primary">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- edit modal -->
+
+
+        <% for (const item of data) { %>
+            <div class="modal fade " id="editModal_<%= item._id %>" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update employee</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/updateEmployee" method="post">
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"> Full Name</label>
+                                    <input type="text" class="form-control" name="name" value="<%=item.name%>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"> Position</label>
+                                    <input type="text" class="form-control" name="position"
+                                        value="<%= item.position %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"> Email</label>
+                                    <input type="text" class="form-control" name="email" value="<%= item.email %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label ">Phone</label>
+                                    <input type="text" class="form-control" name="phone" value="<%= item.phone %>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label">Salary</label>
+                                    <input class="form-control" type="text" name="salary" value="<%= item.salary %>">
+                                </div>
+                                <input type="hidden" name="id" value=" <%= item._id %>">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" id="btn-add-product" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+                <% for (const item of data) { %>
+                    <div class="modal fade " id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog ">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="exampleModalLabel">Are you sure you want to delete?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="/delEmployee" method="post">
+                                    <input type="hidden" name="id" value=" <%= item._id %>">
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" id="btn-add-product"
+                                            class="btn btn-primary">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <%}%>
+    </div>
+
+</body>
+
+<script src="/javascript/bootstrap.min.js"></script>
+
+<script src="/javascript/index.js"></script>
+
+</html>
